@@ -134,7 +134,19 @@ public class TrafficControl : MonoBehaviour
 
     }
 
-    protected virtual void OnFlickLeft() { }
+    protected virtual void OnFlickLeft() 
+	{
+		// 車リストを取得する
+		GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
+		foreach (GameObject car in cars) {
+			// 右折用のコンポーネントインスタンス取得
+			CarDownLeft leftTurn = car.GetComponent<CarDownLeft>();
+			if (null != leftTurn) {
+				// 右折
+				leftTurn.cardownleft();
+			}
+		}
+	}
     protected virtual void OnFlickRight()
     {
         // 車リストを取得する
