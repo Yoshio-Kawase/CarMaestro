@@ -19,6 +19,7 @@ public class CarDown : MonoBehaviour
             transform.position = Position;
         }
     }
+    
 
 	public void cardown()
 	{
