@@ -8,8 +8,8 @@ public class Guage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Spawner target = GameObject.Find("spawner").GetComponent<Spawner>();
-		//print (target.carCount);
-		value = Mathf.PingPong(Time.time * changeSpeed, maxValue);
+		GameObject target = GameObject.Find("spawner");
+		Spawner sp = target.GetComponent<Spawner> ();
+		value = Mathf.PingPong(sp.carCount, maxValue);
 	}
 }
