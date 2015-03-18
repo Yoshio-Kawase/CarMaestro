@@ -21,16 +21,16 @@ public class CarDownLeft : MonoBehaviour
     			// 現在の位置に加算減算を行ったPositionを代入する
     			transform.position = Position;
     		} else {
-    			if (-90.0 <= rigidbody2D.rotation) {
-    				rigidbody2D.MoveRotation (rigidbody2D.rotation - 1.5f);
+    			if (-90.0 <= GetComponent<Rigidbody2D>().rotation) {
+    				GetComponent<Rigidbody2D>().MoveRotation (GetComponent<Rigidbody2D>().rotation - 1.5f);
     				Vector2 rotatePos = new Vector2 (
-    					Mathf.Cos ((rigidbody2D.rotation + 270.0f) * Mathf.Deg2Rad),
-    					Mathf.Sin ((rigidbody2D.rotation + 270.0f) * Mathf.Deg2Rad));
-    				rigidbody2D.velocity = new Vector2 (
-    					rigidbody2D.velocity.x * rotatePos.x + rigidbody2D.velocity.x * rotatePos.x,
-    					rigidbody2D.velocity.y * rotatePos.y + rigidbody2D.velocity.y * rotatePos.x);
-    				rigidbody2D.AddForce (rotatePos / RotateWeight);
-    				rigidbody2D.velocity = Vector2.ClampMagnitude (rigidbody2D.velocity, 1.0f);
+    					Mathf.Cos ((GetComponent<Rigidbody2D>().rotation + 270.0f) * Mathf.Deg2Rad),
+    					Mathf.Sin ((GetComponent<Rigidbody2D>().rotation + 270.0f) * Mathf.Deg2Rad));
+    				GetComponent<Rigidbody2D>().velocity = new Vector2 (
+    					GetComponent<Rigidbody2D>().velocity.x * rotatePos.x + GetComponent<Rigidbody2D>().velocity.x * rotatePos.x,
+    					GetComponent<Rigidbody2D>().velocity.y * rotatePos.y + GetComponent<Rigidbody2D>().velocity.y * rotatePos.x);
+    				GetComponent<Rigidbody2D>().AddForce (rotatePos / RotateWeight);
+    				GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude (GetComponent<Rigidbody2D>().velocity, 1.0f);
     			}
     		}
     	}

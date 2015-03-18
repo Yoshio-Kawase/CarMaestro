@@ -7,7 +7,7 @@ public class CarDownRight : MonoBehaviour
 	public Vector2 SPEED = new Vector2(0.05f, 0.05f);
 
     private bool isValidCarDownRight = false;
-
+/*
     public void Update()
     {
         if (true == isValidCarDownRight) {
@@ -24,25 +24,25 @@ public class CarDownRight : MonoBehaviour
             }
             else
             {
-                if (90.0 >= rigidbody2D.rotation)
+                if (90.0 >= GetComponent<Rigidbody2D>().rotation)
                 {
-                    rigidbody2D.MoveRotation(rigidbody2D.rotation + 2.5f);
+                    GetComponent<Rigidbody2D>().MoveRotation(GetComponent<Rigidbody2D>().rotation + 2.5f);
                     Vector2 rotatePos = new Vector2(
-                        Mathf.Cos((rigidbody2D.rotation + 270.0f) * Mathf.Deg2Rad),
-                        Mathf.Sin((rigidbody2D.rotation + 270.0f) * Mathf.Deg2Rad));
-                    rigidbody2D.velocity = new Vector2(
-                        rigidbody2D.velocity.x * rotatePos.x + rigidbody2D.velocity.x * rotatePos.y,
-                        rigidbody2D.velocity.y * rotatePos.x + rigidbody2D.velocity.y * rotatePos.y);
-                    rigidbody2D.AddForce(rotatePos / RotateWeight);
-                    rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity, 1.0f);
+                        Mathf.Cos((GetComponent<Rigidbody2D>().rotation + 270.0f) * Mathf.Deg2Rad),
+                        Mathf.Sin((GetComponent<Rigidbody2D>().rotation + 270.0f) * Mathf.Deg2Rad));
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(
+                        GetComponent<Rigidbody2D>().velocity.x * rotatePos.x + GetComponent<Rigidbody2D>().velocity.x * rotatePos.y,
+                        GetComponent<Rigidbody2D>().velocity.y * rotatePos.x + GetComponent<Rigidbody2D>().velocity.y * rotatePos.y);
+                    GetComponent<Rigidbody2D>().AddForce(rotatePos / RotateWeight);
+                    GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 1.0f);
                 }
             }
         }
     }
-
+*/
 	public void cardownright()
 	{
-        isValidCarDownRight = true;
+        iTween.Resume(gameObject);
 	}
 	
 }
