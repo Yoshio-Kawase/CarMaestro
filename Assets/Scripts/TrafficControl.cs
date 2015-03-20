@@ -91,15 +91,32 @@ public class TrafficControl : MonoBehaviour
         return flickDirection;
     }
 
-    void resumeDrivingCar() {
+    void resumeDrivingCar(FLICK_DIRECTION flickDirection) {
         // 車リストを取得する
         GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
         foreach(GameObject car in cars) {
             CarPathDrive driveCar = car.GetComponent<CarPathDrive>();
             if((null != driveCar) &&
                    (CarPathDrive.CAR_STATE.CAR_STATE_WAIT_INDICATION == driveCar.getCarState())) {
-                // 指示待ちの車の動作再開
-                iTween.Resume(car);
+                FLICK_DIRECTION carPath = FLICK_DIRECTION.FLICK_NEUTRAL;
+                if ("TopTurnRightPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_RIGHT;
+                } else if ("TopStraightPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_DOWN;
+                } else if ("TopTurnLeftPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_LEFT;
+                } else if ("LeftStraightPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_RIGHT;
+                } else if ("LeftTurnUpPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_UP;
+                } else if ("LeftTurnDownPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_DOWN;
+                }
+
+                if (flickDirection == carPath) {
+                    // 指示待ちの車の動作再開
+                    iTween.Resume(car);
+                }
             }
         }
     }
@@ -148,15 +165,15 @@ public class TrafficControl : MonoBehaviour
     }
 
     protected virtual void OnFlickLeft()  {
-        resumeDrivingCar();
+        resumeDrivingCar(FLICK_DIRECTION.FLICK_LEFT);
 	}
     protected virtual void OnFlickRight() {
-        resumeDrivingCar();
+        resumeDrivingCar(FLICK_DIRECTION.FLICK_RIGHT);
     }
     protected virtual void OnFlickUp() {
-        resumeDrivingCar();
+        resumeDrivingCar(FLICK_DIRECTION.FLICK_UP);
     }
     protected virtual void OnFlickDown() {
-        resumeDrivingCar();
+        resumeDrivingCar(FLICK_DIRECTION.FLICK_DOWN);
     }
 }
