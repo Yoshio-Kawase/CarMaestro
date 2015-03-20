@@ -91,6 +91,19 @@ public class TrafficControl : MonoBehaviour
         return flickDirection;
     }
 
+    void resumeDrivingCar() {
+        // 車リストを取得する
+        GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
+        foreach(GameObject car in cars) {
+            CarPathDrive driveCar = car.GetComponent<CarPathDrive>();
+            if((null != driveCar) &&
+                   (CarPathDrive.CAR_STATE.CAR_STATE_WAIT_INDICATION == driveCar.getCarState())) {
+                // 指示待ちの車の動作再開
+                iTween.Resume(car);
+            }
+        }
+    }
+
     void OnMouseUp()
     {
         // フリック状態をニュートラルにする
@@ -134,47 +147,16 @@ public class TrafficControl : MonoBehaviour
 
     }
 
-    protected virtual void OnFlickLeft() 
-	{
-		// 車リストを取得する
-		GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-		foreach (GameObject car in cars) {
-			// 右折用のコンポーネントインスタンス取得
-			CarDownLeft leftTurn = car.GetComponent<CarDownLeft>();
-			if (null != leftTurn) {
-				// 右折
-				leftTurn.cardownleft();
-			}
-		}
+    protected virtual void OnFlickLeft()  {
+        resumeDrivingCar();
 	}
-    protected virtual void OnFlickRight()
-    {
-        // 車リストを取得する
-        GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-        foreach (GameObject car in cars) {
-            // 右折用のコンポーネントインスタンス取得
-            CarDownRight rightTurn = car.GetComponent<CarDownRight>();
-            if (null != rightTurn) {
-                // 右折
-                rightTurn.cardownright();
-            }
-        }
-
+    protected virtual void OnFlickRight() {
+        resumeDrivingCar();
     }
-    protected virtual void OnFlickUp() { }
-    protected virtual void OnFlickDown()
-    {
-        // 車リストを取得する
-        GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-        foreach (GameObject car in cars)
-        {
-            // 直進用のコンポーネントインスタンス取得
-            CarDown rightTurn = car.GetComponent<CarDown>();
-            if (null != rightTurn)
-            {
-                // 直進
-                rightTurn.cardown();
-            }
-        }
+    protected virtual void OnFlickUp() {
+        resumeDrivingCar();
+    }
+    protected virtual void OnFlickDown() {
+        resumeDrivingCar();
     }
 }
