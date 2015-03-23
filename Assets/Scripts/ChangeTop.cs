@@ -1,21 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class Change : MonoBehaviour {
-	public Guage _pingPong;
+public class ChangeTop : MonoBehaviour {
+	public GuageTop _pingPong;
 	public TextMesh _resultText;
 	Vector3 defaultScale;
 	
 	bool isTapped = false;
 	float resultValue;
 	
-	public bool CHANGE_X = false;
-	public bool CHANGE_Y = false;
-	public bool CHANGE_Z = false;
+	public bool CHANGE_XT = false;
+	public bool CHANGE_YT = false;
+	public bool CHANGE_ZT = false;
 	
 	// Use this for initialization
 	void Start () {
-		_pingPong = this.gameObject.GetComponent<Guage>();
+		_pingPong = this.gameObject.GetComponent<GuageTop>();
 		defaultScale = transform.localScale;
 	}
 	
@@ -35,14 +35,14 @@ public class Change : MonoBehaviour {
 	void changeSize() {
 		Vector3 newSize = transform.localScale;
 		
-		if (CHANGE_X) {
+		if (CHANGE_XT) {
 			newSize.x = defaultScale.x * _pingPong.value / _pingPong.maxValue;
 		}
-		if (CHANGE_Y) {
+		if (CHANGE_YT) {
 			newSize.y = defaultScale.y * _pingPong.value / _pingPong.maxValue;
 		}
 		
-		if (CHANGE_Z) {
+		if (CHANGE_ZT) {
 			newSize.z = defaultScale.z * _pingPong.value / _pingPong.maxValue;
 		}
 		transform.localScale = newSize;
