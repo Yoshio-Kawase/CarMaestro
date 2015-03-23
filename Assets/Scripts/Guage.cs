@@ -12,9 +12,9 @@ public class Guage : MonoBehaviour {
 		Spawner sp = target.GetComponent<Spawner> ();
 		value = Mathf.PingPong(sp.carCount, maxValue);
 
-		if (sp.carCount == 3) {
-			Application.LoadLevel ("end");
-		}
+		//if (sp.carCount == 3) {
+		//	Application.LoadLevel ("end");
+		//}
 	}
 
 

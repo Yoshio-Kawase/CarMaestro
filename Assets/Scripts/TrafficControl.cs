@@ -111,6 +111,18 @@ public class TrafficControl : MonoBehaviour
                     carPath = FLICK_DIRECTION.FLICK_UP;
                 } else if ("LeftTurnDownPath" == driveCar.pathName) {
                     carPath = FLICK_DIRECTION.FLICK_DOWN;
+                } else if ("BottomStraightPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_UP;
+                } else if ("BottomTurnRightPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_RIGHT;
+                } else if ("BottomTurnLeftPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_LEFT;
+                } else if ("RightStraightPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_LEFT;
+                } else if ("RightTurnUpPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_UP;
+                } else if ("RightTurnDownPath" == driveCar.pathName) {
+                    carPath = FLICK_DIRECTION.FLICK_DOWN;
                 }
 
                 if (flickDirection == carPath) {
