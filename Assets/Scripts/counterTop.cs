@@ -4,10 +4,18 @@ using System.Collections;
 public class counterTop : MonoBehaviour
 {
 
-	void OnTriggerEnter2D(Collider2D col){
-		GameObject targetTop = GameObject.Find ("spawner");
-		Spawner compTop = targetTop.GetComponent<Spawner> ();
-		compTop.carCount--;
+	public GameObject tarT;
+	public Spawner compT;
+	
+	void Start(){
+		tarT = GameObject.Find ("spawner");
+		compT = tarT.GetComponent<Spawner> ();
+	}
+	
+	void OnTriggerExit2D(Collider2D col){
+		if (compT.carCount > 0) {
+			compT.carCount--;
+		}
 	}
 
 }
