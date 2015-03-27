@@ -44,34 +44,40 @@ public class CarPathDrive : MonoBehaviour
 
     public void pause() {
         iTween.Pause(gameObject);
+        //gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        //gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
     }
 
     public void resume() {
         iTween.Resume(gameObject);
+        //gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+    }
+
+    public void indicate() {
+        resume();
+        carState = CAR_STATE.CAR_STATE_OUTGOING;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if ("stop" == col.name) {
+        if (("stop" == col.name) && (CAR_STATE.CAR_STATE_INCOMING == carState)) {
             // 停止線に達したため停止
             pause();
             carState = CAR_STATE.CAR_STATE_WAIT_INDICATION;
-        } else if("Car" == col.tag) {
-            // 他の車にぶつかったので停止
-            float diffy = col.transform.position.y - transform.position.y;
-            float diffx = col.transform.position.x - transform.position.x;
-            float collisionAngle = Mathf.Atan2(diffy, diffx) * Mathf.Rad2Deg + zeroAngle;
-            if(45f >= collisionAngle) {
-                pause();
-                carState = CAR_STATE.CAR_STATE_CONGESTION;
-            }
+        } else if (("Car" == col.tag) && (CAR_STATE.CAR_STATE_INCOMING == carState) &&
+            (CAR_STATE.CAR_STATE_INCOMING != col.GetComponent<CarPathDrive>().carState)) {
+            pause();
+            carState = CAR_STATE.CAR_STATE_CONGESTION;
         }
     }
 
     private void OnTriggerExit2D(Collider2D col) {
         if("Car" == col.tag) {
             // 移動先にいる車が移動したので移動再開
-            resume();
+            if (CAR_STATE.CAR_STATE_CONGESTION == carState) {
+                resume();
+                carState = CAR_STATE.CAR_STATE_INCOMING;
+            }
         }
     }
 }

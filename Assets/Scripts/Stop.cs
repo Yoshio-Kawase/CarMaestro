@@ -13,7 +13,7 @@ public class Stop : MonoBehaviour
     }
 	void OnTriggerEnter2D(Collider2D col){
         if ("stop" == col.name) {
-            iTween.Pause(gameObject);
+            //iTween.Pause(gameObject);
         }
 	}
 

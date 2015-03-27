@@ -127,7 +127,10 @@ public class TrafficControl : MonoBehaviour
 
                 if (flickDirection == carPath) {
                     // 指示待ちの車の動作再開
-                    iTween.Resume(car);
+                    CarPathDrive drive = car.GetComponent<CarPathDrive>();
+                    if (null != drive) {
+                        drive.indicate();
+                    }
                 }
             }
         }
