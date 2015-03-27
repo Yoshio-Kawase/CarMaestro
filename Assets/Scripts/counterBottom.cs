@@ -6,6 +6,7 @@ public class counterBottom : MonoBehaviour
 
 	public GameObject tarB;
 	public Spawner compB;
+	public int clearBottom = 0;
 	
 	void Start(){
 		tarB = GameObject.Find ("spawner_bottom");
@@ -15,6 +16,7 @@ public class counterBottom : MonoBehaviour
 	void OnTriggerExit2D(Collider2D col){
 		if (compB.carCount > 0) {
 			compB.carCount--;
+			clearBottom++;
 		}
 	}
 

@@ -5,6 +5,7 @@ public class counterLeft : MonoBehaviour
 {
 	public GameObject tarL;
 	public Spawner compL;
+	public int clearLeft = 0;
 
 	void Start(){
 		tarL = GameObject.Find ("spawner_left");
@@ -14,6 +15,7 @@ public class counterLeft : MonoBehaviour
 	void OnTriggerExit2D(Collider2D col){
 		if (compL.carCount > 0) {
 			compL.carCount--;
+			clearLeft++;
 		}
 	}
 }
