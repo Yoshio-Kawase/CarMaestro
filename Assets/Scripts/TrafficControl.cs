@@ -79,11 +79,12 @@ public class TrafficControl : MonoBehaviour
             if (0f - FlickPermissiveAngle < flickAngle && 0f + FlickPermissiveAngle > flickAngle) {
                 // 右フリック
                 flickDirection = FLICK_DIRECTION.FLICK_RIGHT;
-            } else if (180f - FlickPermissiveAngle < flickAngle && 180f + FlickPermissiveAngle > flickAngle) {
+            } else if ((180f - FlickPermissiveAngle < flickAngle && 180f + FlickPermissiveAngle > flickAngle) ||
+                        (-180f - FlickPermissiveAngle < flickAngle && -180f + FlickPermissiveAngle > flickAngle)) {
                 // 左フリック
                 flickDirection = FLICK_DIRECTION.FLICK_LEFT;
             } else if (90f - FlickPermissiveAngle < flickAngle && 90f + FlickPermissiveAngle > flickAngle) { 
-                // 上フリック
+                // 上フリック    
                 flickDirection = FLICK_DIRECTION.FLICK_UP;
             } else if (-90f - FlickPermissiveAngle < flickAngle && -90f + FlickPermissiveAngle > flickAngle) { 
                 // 下フリック
@@ -91,12 +92,14 @@ public class TrafficControl : MonoBehaviour
             } else { 
                 // フリック範囲外
                 flickDirection = FLICK_DIRECTION.FLICK_UNDEFINED;
+                print("flickAngle[" + flickAngle + "]");
             }
 
             // 次の判定のために初期化する
             m_flickVector.Set(0.0f, 0.0f);
         } else {
             // まだフリック遊び範囲内
+            print("m_flickVector.magnitude[" + m_flickVector.magnitude + "]");
         }
 
         if (m_flickState != flickDirection)

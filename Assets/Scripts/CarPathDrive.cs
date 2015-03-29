@@ -32,7 +32,11 @@ public class CarPathDrive : MonoBehaviour
 
     void Start() {
         // 移動方向に基づいて移動パスを設定
-        iTween.MoveTo(this.gameObject, iTween.Hash("path", iTweenPath.GetPath(pathName), "time", velocity));
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "path", iTweenPath.GetPath(pathName),
+            "time", velocity,
+            "oncomplete", "OnCompleteDrive",
+            "oncompletetarget", gameObject));
 
         // ポップアップオブジェクトのクローン作成
         if(null != popup) {
@@ -149,6 +153,14 @@ public class CarPathDrive : MonoBehaviour
             (CAR_STATE.CAR_STATE_INCOMING != col.GetComponent<CarPathDrive>().carState)) {
             pause();
             carState = CAR_STATE.CAR_STATE_CONGESTION;
+        } else if(("Car" == col.tag) && (CAR_STATE.CAR_STATE_OUTGOING == carState)) {
+            CarPathDrive colCar = col.GetComponent<CarPathDrive>();
+            if(null != colCar) {
+                if(CAR_STATE.CAR_STATE_OUTGOING == colCar.carState) {
+                    // 指示後に車どうしが衝突したらゲームオーバー
+                    Application.LoadLevel("end");
+                }
+            }
         }
     }
 
@@ -160,5 +172,19 @@ public class CarPathDrive : MonoBehaviour
                 carState = CAR_STATE.CAR_STATE_INCOMING;
             }
         }
+    }
+
+    public void OnCompleteDrive() {
+        // 移動完了したので破棄
+        Destroy(gameObject);
+    }
+
+    void OnBecameInvisible() {
+        Destroy(gameObject);
+    }
+
+    void OnDestroy() {
+        Destroy(clonePopup);
+        Destroy(cloneGuide);
     }
 }
