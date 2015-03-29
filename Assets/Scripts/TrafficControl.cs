@@ -7,14 +7,30 @@ public class TrafficControl : MonoBehaviour
     public float FlickMarginCoordNorm = 1.5f;
     // XY軸に対するフリック方向許容角度(度)
     public float FlickPermissiveAngle = 20.0f;
-    // 左フリック許可
-    public bool LeftFlickEnable = true;
-    // 右フリック許可
-    public bool RightFlickEnable = true;
-    // 上フリック許可
-    public bool UpFlickEnable = true;
-    // 下フリック許可
-    public bool DownFlickEnable = true;
+    // 上から下
+    public bool EnableTopDownPath = true;
+    // 上から左
+    public bool EnableTopLeftPath = true;
+    // 上から右
+    public bool EnableTopRightPath = true;
+    // 左から上
+    public bool EnableLeftUpPath = true;
+    // 左から右
+    public bool EnableLeftRightPath = true;
+    // 左から下
+    public bool EnableLeftDownPath = true;
+    // 右から上
+    public bool EnableRightUpPath = true;
+    // 右から左
+    public bool EnableRightLeftPath = true;
+    // 右から下
+    public bool EnableRightDownPath = true;
+    // 下から上
+    public bool EnableBottomUpPath = true;
+    // 下から左
+    public bool EnableBottomLeftPath = true;
+    // 下から右
+    public bool EnableBottomRightPath = true;
 
     public enum FLICK_DIRECTION
     {
@@ -99,29 +115,29 @@ public class TrafficControl : MonoBehaviour
             if((null != driveCar) &&
                    (CarPathDrive.CAR_STATE.CAR_STATE_WAIT_INDICATION == driveCar.getCarState())) {
                 FLICK_DIRECTION carPath = FLICK_DIRECTION.FLICK_NEUTRAL;
-                if ("TopTurnRightPath" == driveCar.pathName) {
+                if (("TopTurnRightPath" == driveCar.pathName) && (true == EnableTopRightPath)) {
                     carPath = FLICK_DIRECTION.FLICK_RIGHT;
-                } else if ("TopStraightPath" == driveCar.pathName) {
+                } else if (("TopStraightPath" == driveCar.pathName) && (true == EnableTopDownPath)) {
                     carPath = FLICK_DIRECTION.FLICK_DOWN;
-                } else if ("TopTurnLeftPath" == driveCar.pathName) {
+                } else if (("TopTurnLeftPath" == driveCar.pathName) && (true == EnableTopLeftPath)) {
                     carPath = FLICK_DIRECTION.FLICK_LEFT;
-                } else if ("LeftStraightPath" == driveCar.pathName) {
+                } else if (("LeftStraightPath" == driveCar.pathName) && (true == EnableLeftRightPath)) {
                     carPath = FLICK_DIRECTION.FLICK_RIGHT;
-                } else if ("LeftTurnUpPath" == driveCar.pathName) {
+                } else if (("LeftTurnUpPath" == driveCar.pathName) && (true == EnableLeftUpPath)) {
                     carPath = FLICK_DIRECTION.FLICK_UP;
-                } else if ("LeftTurnDownPath" == driveCar.pathName) {
+                } else if (("LeftTurnDownPath" == driveCar.pathName) && (true == EnableLeftDownPath)) {
                     carPath = FLICK_DIRECTION.FLICK_DOWN;
-                } else if ("BottomStraightPath" == driveCar.pathName) {
+                } else if (("BottomStraightPath" == driveCar.pathName) && (true == EnableBottomUpPath)) {
                     carPath = FLICK_DIRECTION.FLICK_UP;
-                } else if ("BottomTurnRightPath" == driveCar.pathName) {
+                } else if (("BottomTurnRightPath" == driveCar.pathName) && (true == EnableBottomRightPath)) {
                     carPath = FLICK_DIRECTION.FLICK_RIGHT;
-                } else if ("BottomTurnLeftPath" == driveCar.pathName) {
+                } else if (("BottomTurnLeftPath" == driveCar.pathName) && (true == EnableBottomLeftPath)) {
                     carPath = FLICK_DIRECTION.FLICK_LEFT;
-                } else if ("RightStraightPath" == driveCar.pathName) {
+                } else if (("RightStraightPath" == driveCar.pathName) && (true == EnableRightLeftPath)) {
                     carPath = FLICK_DIRECTION.FLICK_LEFT;
-                } else if ("RightTurnUpPath" == driveCar.pathName) {
+                } else if (("RightTurnUpPath" == driveCar.pathName) && (true == EnableRightUpPath)) {
                     carPath = FLICK_DIRECTION.FLICK_UP;
-                } else if ("RightTurnDownPath" == driveCar.pathName) {
+                } else if (("RightTurnDownPath" == driveCar.pathName) && (true == EnableRightDownPath)) {
                     carPath = FLICK_DIRECTION.FLICK_DOWN;
                 }
 
@@ -138,6 +154,28 @@ public class TrafficControl : MonoBehaviour
 
     void OnMouseUp()
     {
+        // フリックに応じてリスナーを呼び出す
+        switch(m_flickState) {
+            // 左フリック
+            case FLICK_DIRECTION.FLICK_LEFT:
+                OnFlickLeft();
+                break;
+            // 右フリック
+            case FLICK_DIRECTION.FLICK_RIGHT:
+                OnFlickRight();
+                break;
+            // 上フリック
+            case FLICK_DIRECTION.FLICK_UP:
+                OnFlickUp();
+                break;
+            // 下フリック
+            case FLICK_DIRECTION.FLICK_DOWN:
+                OnFlickDown();
+                break;
+            default:
+                break;
+        }
+
         // フリック状態をニュートラルにする
         m_flickState = FLICK_DIRECTION.FLICK_NEUTRAL;
     }
@@ -146,37 +184,6 @@ public class TrafficControl : MonoBehaviour
     {
         // フリック時の動作呼び出しとインスタンスの状態更新
         m_flickState = judgeFlickVector();
-
-        // フリックに応じてリスナーを呼び出す
-        switch (m_flickState) {
-            // 左フリック
-            case FLICK_DIRECTION.FLICK_LEFT:
-                if(true == LeftFlickEnable) {
-                    OnFlickLeft();
-                }
-                break;
-            // 右フリック
-            case FLICK_DIRECTION.FLICK_RIGHT:
-                if(true == RightFlickEnable) {
-                    OnFlickRight();
-                }
-                break;
-            // 上フリック
-            case FLICK_DIRECTION.FLICK_UP:
-                if(true == UpFlickEnable) {
-                    OnFlickUp();
-                }
-                break;
-            // 下フリック
-            case FLICK_DIRECTION.FLICK_DOWN:
-                if(true == DownFlickEnable) {
-                    OnFlickDown();
-                }
-                break;
-            default:
-                break;
-        }
-
     }
 
     protected virtual void OnFlickLeft()  {
