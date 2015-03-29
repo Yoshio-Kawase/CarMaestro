@@ -6,6 +6,8 @@ public class CarPathDrive : MonoBehaviour
     public float velocity = 5f;
     public string pathName = "";
     public float zeroAngle = 90f;
+    public GameObject popup;        // ポップアップ
+    public GameObject guide;        // ガイドアロー
 
     private Vector2 prevPos = Vector2.zero;
     public enum CAR_STATE {
@@ -15,9 +17,72 @@ public class CarPathDrive : MonoBehaviour
         CAR_STATE_CONGESTION,       // 渋滞待ち
     }
     private CAR_STATE carState = CAR_STATE.CAR_STATE_INCOMING;
+    
+    // クローンポップアップ
+    private GameObject clonePopup = null;
+    // 表示位置位置調整
+    private float shiftPopup_y = 1f;
+    private float shitfPopup_z = -1f;
+
+    // クローンガイドアロー
+    private GameObject cloneGuide = null;
+    // 表示位置調整
+    private float shiftGuide_y = 1f;
+    private float shitfGuide_z = -2f;
 
     void Start() {
+        // 移動方向に基づいて移動パスを設定
         iTween.MoveTo(this.gameObject, iTween.Hash("path", iTweenPath.GetPath(pathName), "time", velocity));
+
+        // ポップアップオブジェクトのクローン作成
+        if(null != popup) {
+            clonePopup = (GameObject)(Instantiate(popup, transform.position, transform.rotation));
+        }
+
+        // ガイドアローオブジェクトのクローン生成
+        if(null != guide) {
+            // ガイドアローの方向に合わせて回転させる
+            float rotate = 0f;
+            if("TopStraightPath" == pathName) {
+                // 下方向
+                rotate = -90f;
+            } else if("TopTurnRightPath" == pathName) {
+                // 右方向
+                rotate = 0f;
+            } else if("TopTurnLeftPath" == pathName) {
+                // 左方向
+                rotate = 180f;
+            } else if("LeftStraightPath" == pathName) {
+                // 右方向
+                rotate = 0f;
+            } else if("LeftTurnDownPath" == pathName) {
+                // 下方向
+                rotate = -90f;
+            } else if("LeftTurnUpPath" == pathName) {
+                // 上方向
+                rotate = 90f;
+            } else if("RightStraightPath" == pathName) {
+                // 左方向
+                rotate = 180f;
+            } else if("RightTurnUpPath" == pathName) {
+                // 上方向
+                rotate = 90f;
+            } else if("RightTurnDownPath" == pathName) {
+                // 下方向
+                rotate = -90f;
+            } else if("BottomStraightPath" == pathName) {
+                // 上方向
+                rotate = 90f;
+            } else if("BottomTurnRightPath" == pathName) {
+                // 右方向
+                rotate = 0f;
+            } else if("BottomTurnLeftPath" == pathName) {
+                // 左方向
+                rotate = 180f;
+            }
+            cloneGuide = (GameObject)(Instantiate(guide, transform.position, transform.rotation));
+            cloneGuide.transform.Rotate(0f, 0f, rotate);
+        }
     }
 
     void Update() {
@@ -32,6 +97,22 @@ public class CarPathDrive : MonoBehaviour
                 }
                 transform.eulerAngles = new Vector3(0f, 0f, angle);
             }
+        }
+
+        // ポップアップの位置更新
+        if(null != clonePopup) {
+            clonePopup.transform.localPosition = new Vector3(
+                transform.position.x,
+                transform.position.y + shiftPopup_y,
+                transform.position.z + shitfPopup_z);
+        }
+
+        // ガイドアローの位置更新
+        if(null != clonePopup) {
+            cloneGuide.transform.localPosition = new Vector3(
+                transform.position.x,
+                transform.position.y + shiftGuide_y,
+                transform.position.z + shitfGuide_z);
         }
 
         // 位置を保持
