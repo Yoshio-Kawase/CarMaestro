@@ -11,6 +11,8 @@ public class clear : MonoBehaviour
 	public counterRight getR;
 	public counterTop getT;
 	public counterBottom getB;
+	private GameObject sc;
+	public TextMesh getScore;
 	private int clearCount;
 	
 	void Start(){
@@ -22,10 +24,13 @@ public class clear : MonoBehaviour
 		getR = objR.GetComponent<counterRight> ();
 		getT = objT.GetComponent<counterTop> ();
 		getB = objB.GetComponent<counterBottom> ();
+		sc = GameObject.Find ("score");
+		getScore = sc.GetComponent<TextMesh> ();
 	}
 	
 	void Update(){
 		clearCount = getL.clearLeft + getR.clearRight + getB.clearBottom + getT.clearTop;
+		getScore.text = "Score\n" + clearCount + "台";
 		if (clearCount >= 20) {
 			Application.LoadLevel ("clear");
 		}
